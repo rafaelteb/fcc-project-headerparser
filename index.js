@@ -21,10 +21,12 @@ app.get('/', function (req, res) {
 
 // Whoami endpoint wiht info about my ip adress
 app.get('/api/whoami', function (req, res) {
-  let ipaddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
+  let ipaddress = (req.headers['x-forwarded-for'] || req.socket.remoteAddress)
+                  .split(',')[0]
+                  .trim(); 
   let language = req.headers['accept-language'];
   let software = req.headers['user-agent'];
-  res.json({ ipaddress: ip, language: language, software: software });
+  res.json({ ipaddress: ipaddress, language: language, software: software });
 });
 
 // listen for requests :)
